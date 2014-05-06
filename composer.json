@@ -1,0 +1,19 @@
+{
+    "name": "btmpl/allegro",
+    "homepage": "https://github.com/btmpl/allegro",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Bartosz Szczecinski",
+            "email": "baphemot@gmail.com",
+            "homepage": "http://szczecinski.eu"
+        }
+    ],
+    "require": {
+        "php": ">=5"
+    },
+
+    "autoload": {
+        "psr-4": { "Allegro\\": "src/" }
+    }
+}
