@@ -16,6 +16,7 @@ class Allegro {
 
         $options = array();
         $options['features'] = SOAP_SINGLE_ELEMENT_ARRAYS;
+        $options['trace'] = true;
         $this->_client = new \SoapClient('https://webapi.allegro.pl/service.php?wsdl', $options);
         $request = array(
             'countryId' => $countryId,
