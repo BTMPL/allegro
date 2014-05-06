@@ -6,14 +6,14 @@ class Allegro {
 
     private $_client = NULL;
     private $_session = NULL;
-    
+
     private $versionKeys = array();
-	
-	private $key;
-	private $countryId;
+
+    private $key;
+    private $countryId;
 
     function __construct($key, $countryId = 1) {
-        
+
         $options = array();
         $options['features'] = SOAP_SINGLE_ELEMENT_ARRAYS;
         $this->_client = new \SoapClient('https://webapi.allegro.pl/service.php?wsdl', $options);
@@ -21,10 +21,10 @@ class Allegro {
             'countryId' => $countryId,
             'webapiKey' => $key
         );
-		
-		$this->key = $key;
-		$this->countryId = $countryId;
-        
+
+        $this->key = $key;
+        $this->countryId = $countryId;
+
         $sys = $this->_client->doQueryAllSysStatus($request);
         foreach ($sys->sysCountryStatus->item as $row) {
             $this->versionKeys[$row->countryId] = $row;
@@ -45,7 +45,7 @@ class Allegro {
     function __call($name, $arguments) {
         if(isset($arguments[0])) $arguments = (array) $arguments[0];
         else $arguments = array();
-        
+
         $arguments['sessionId'] = $this->_session->sessionHandlePart;
         $arguments['sessionHandle'] = $this->_session->sessionHandlePart;
         $arguments['webapiKey'] = $this->key;
@@ -54,5 +54,5 @@ class Allegro {
 
         return $this->_client->$name($arguments);
     }
-    
+
 }
