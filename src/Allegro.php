@@ -43,7 +43,9 @@ class Allegro {
     }
 
     function __call($name, $arguments) {
-        $arguments = (array) $arguments[0];
+        if(isset($arguments[0])) $arguments = (array) $arguments[0];
+        else $arguments = array();
+        
         $arguments['sessionId'] = $this->_session->sessionHandlePart;
         $arguments['sessionHandle'] = $this->_session->sessionHandlePart;
         $arguments['webapiKey'] = $this->key;
