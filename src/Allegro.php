@@ -12,12 +12,12 @@ class Allegro {
     private $key;
     private $countryId;
 
-    function __construct($key, $countryId = 1) {
+    function __construct($key, $countryId = 1, $wsdl = 'https://webapi.allegro.pl/service.php?wsdl') {
 
         $options = array();
         $options['features'] = SOAP_SINGLE_ELEMENT_ARRAYS;
         $options['trace'] = true;
-        $this->_client = new \SoapClient('https://webapi.allegro.pl/service.php?wsdl', $options);
+        $this->_client = new \SoapClient($wsdl, $options);
         $request = array(
             'countryId' => $countryId,
             'webapiKey' => $key
