@@ -1,4 +1,4 @@
-<?
+<?php
 namespace Allegro;
 
 class Allegro 
