@@ -1,7 +1,7 @@
 <?php
 namespace Allegro;
 
-class Allegro 
+class Allegro
 {
     protected $client = NULL;
     protected $session = NULL;
@@ -11,20 +11,18 @@ class Allegro
     protected $key;
     protected $countryId;
 
-    function __construct($key, $countryId = 1, $wsdl = 'https://webapi.allegro.pl/service.php?wsdl') 
+    public function __construct($key, $countryId = 1, $wsdl = 'https://webapi.allegro.pl/service.php?wsdl', $options = [])
     {
         $this->key = $key;
         $this->countryId = $countryId;
-        
-        $options = array();
-        $options['features'] = SOAP_SINGLE_ELEMENT_ARRAYS;
-        $options['trace'] = true;
+
+        $options = $this->setDefaultOptions($options);
+
         $this->client = new \SoapClient($wsdl, $options);
         $request = array(
             'countryId' => $countryId,
             'webapiKey' => $key
         );
-
 
         $status = $this->client->doQueryAllSysStatus($request);
         foreach ($status->sysCountryStatus->item as $row) {
@@ -32,7 +30,7 @@ class Allegro
         }
     }
 
-    function login($login, $password) 
+    public function login($login, $password)
     {
         $request = array(
             'userLogin' => $login,
@@ -44,7 +42,7 @@ class Allegro
         $this->session = $this->client->doLogin($request);
     }
 
-    function __call($name, $arguments) 
+    public function __call($name, $arguments)
     {
         if(isset($arguments[0])) $arguments = (array)$arguments[0];
         else $arguments = array();
@@ -58,4 +56,14 @@ class Allegro
         return $this->client->$name($arguments);
     }
 
+    private function setDefaultOptions($options)
+    {
+        if (empty($options['features'])) {
+            $options['features'] = SOAP_SINGLE_ELEMENT_ARRAYS;
+        }
+        if (empty($options['trace'])) {
+            $options['trace'] = true;
+        }
+        return $options;
+    }
 }
