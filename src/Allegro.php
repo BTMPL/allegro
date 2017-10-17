@@ -3,6 +3,9 @@ namespace Allegro;
 
 class Allegro
 {
+    /**
+     * @var \SoapClient
+     */
     protected $client = NULL;
     protected $session = NULL;
 
@@ -11,6 +14,14 @@ class Allegro
     protected $key;
     protected $countryId;
 
+    /**
+     * Allegro
+     * 
+     * @param string $key
+     * @param int $countryId
+     * @param string $wsdl
+     * @param array $options
+     */
     public function __construct($key, $countryId = 1, $wsdl = 'https://webapi.allegro.pl/service.php?wsdl', $options = [])
     {
         $this->key = $key;
@@ -40,6 +51,22 @@ class Allegro
             'localVersion' => $this->versionKeys[$this->countryId]->verKey,
         );
         $this->session = $this->client->doLogin($request);
+    }
+    
+    /**
+     * Logowanie za pomoca access tokena zwroconego przez REST API
+     * 
+     * @param string $token
+     */
+    public function loginWithAccessToken($token)
+    {
+        $request = array(
+            'accessToken' => $token,
+            'countryCode' => $this->countryId,
+            'webapiKey' => $this->key,
+        );
+
+        $this->session = $this->client->doLoginWithAccessToken($request);
     }
 
     public function __call($name, $arguments)
