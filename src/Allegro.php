@@ -69,6 +69,20 @@ class Allegro
         $this->session = $this->client->doLoginWithAccessToken($request);
     }
 
+    /**
+     * Pobierz klienta SoapClient
+     * 
+     * Umozliwienie wywolania metod bezargumentowych 
+     * (bez dodawania elementow sesjii allegro) 
+     * np.: $Allegro->client()->__getLastRequest();
+     * 
+     * @return \SoapClient
+     */
+    public function client()
+    {
+        return $this->client;
+    }
+
     public function __call($name, $arguments)
     {
         if(isset($arguments[0])) $arguments = (array)$arguments[0];
